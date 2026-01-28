@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Echo Chamber v3.0 - Echo Castle</title>
+    <style>
+        /* ========== CSS Variables and Theme ========== */
+        :root {
+            --primary: #6366f1;
+            --primary-light: #818cf8;
+            --primary-dark: #4f46e5;
+            --secondary: #ec4899;
+            --accent: #f59e0b;
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --dark: #1f2937;
+            --light: #f3f4f6;
+            --border: #e5e7eb;
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            --shadow-lg: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        /* ========== Reset and Base Styles ========== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+            color: #f3f4f6;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* ========== Container and Layout ========== */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            padding: 40px 20px;
+            text-align: center;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '🏰';
+            position: absolute;
+            font-size: 80px;
+            right: 20px;
+            opacity: 0.1;
+            transform: rotate(-15deg);
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .subtitle {
+            font-size: 1.1em;
+            opacity: 0.95;
+        }
+
+        /* ========== Main Content Grid ========== */
+        main {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: #2d3748;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            border-color: var(--primary);
+            box-shadow: 0 0 20px rgba(99, 102, 241, 0.4);
+            transform: translateY(-5px);
+        }
+
+        .card h2 {
+            color: var(--primary);
+            margin-bottom: 15px;
+            font-size: 1.5em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* ========== Forms ========== */
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #e5e7eb;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        select {
+            width: 100%;
+            padding: 10px 15px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            background: #1f2937;
+            color: #f3f4f6;
+            font-size: 1em;
+            transition: border-color 0.3s ease;
+        }
+
+        input[type="text"]:focus,
+        input[type="number"]:focus,
+        select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 10px rgba(99, 102, 241, 0.3);
+        }
+
+        /* ========== Buttons ========== */
+        button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            width: 100%;
+        }
+
+        .btn-primary:hover {
+            box-shadow: 0 0 20px rgba(99, 102, 241, 0.5);
+            transform: scale(1.02);
+        }
+
+        .btn-primary:active {
+            transform: scale(0.98);
+        }
+
+        .btn-secondary {
+            background: var(--secondary);
+            color: white;
+            padding: 8px 16px;
+            font-size: 0.9em;
+        }
+
+        .btn-secondary:hover {
+            background: #be185d;
+        }
+
+        .btn-small {
+            padding: 6px 12px;
+            font-size: 0.85em;
+            margin: 5px 5px 5px 0;
+        }
+
+        /* ========== Tabs ========== */
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            padding: 10px 20px;
+            background: var(--dark);
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: #f3f4f6;
+            font-weight: 600;
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-color: var(--primary);
+            box-shadow: 0 0 15px rgba(99, 102, 241, 0.4);
+        }
+
+        .tab-btn:hover:not(.active) {
+            border-color: var(--primary);
+        }
+
+        /* ========== Results Display ========== */
+        .result-box {
+            background: #1f2937;
+            border-left: 4px solid var(--primary);
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+
+        .result-success {
+            border-left-color: var(--success);
+        }
+
+        .result-error {
+            border-left-color: var(--danger);
+        }
+
+        .result-box h3 {
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .result-item:last-child {
+            border-bottom: none;
+        }
+
+        .result-label {
+            font-weight: 600;
+            color: #e5e7eb;
+        }
+
+        .result-value {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        /* ========== Chart Container ========== */
+        .chart-container {
+            background: #1f2937;
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 20px;
+            max-width: 100%;
+            height: 400px;
+        }
+
+        #sequenceChart {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* ========== Statistics Grid ========== */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .stat-box {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: white;
+        }
+
+        .stat-label {
+            font-size: 0.9em;
+            opacity: 0.9;
+            margin-top: 5px;
+        }
+
+        /* ========== Memories List ========== */
+        .memories-list {
+            max-height: 500px;
+            overflow-y: auto;
+            margin-top: 15px;
+        }
+
+        .memory-item {
+            background: #1f2937;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .memory-item:hover {
+            border-color: var(--primary);
+            background: #374151;
+        }
+
+        .memory-item .badge {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.85em;
+            margin-bottom: 8px;
+        }
+
+        /* ========== Samples ========== */
+        .sample-item {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.2) 0%, rgba(236, 72, 153, 0.2) 100%);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .sample-item:hover {
+            border-color: var(--primary);
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.3) 0%, rgba(236, 72, 153, 0.3) 100%);
+            transform: translateX(5px);
+        }
+
+        .sample-name {
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+
+        .sample-description {
+            font-size: 0.9em;
+            opacity: 0.8;
+            margin-bottom: 8px;
+        }
+
+        .sample-sequence {
+            font-family: 'Courier New', monospace;
+            background: #1f2937;
+            padding: 8px;
+            border-radius: 4px;
+            font-size: 0.9em;
+            color: var(--accent);
+            word-break: break-all;
+        }
+
+        /* ========== Responsive Design ========== */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.8em;
+            }
+
+            main {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .card {
+                padding: 15px;
+            }
+
+            .tabs {
+                flex-direction: column;
+            }
+
+            .tab-btn {
+                width: 100%;
+            }
+        }
+
+        /* ========== Loading State ========== */
+        .loading {
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        .spinner {
+            border: 3px solid rgba(99, 102, 241, 0.3);
+            border-top: 3px solid var(--primary);
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 10px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* ========== Error Display ========== */
+        .error-message {
+            background: rgba(239, 68, 68, 0.2);
+            border: 1px solid var(--danger);
+            color: #fca5a5;
+            padding: 12px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+
+        .success-message {
+            background: rgba(16, 185, 129, 0.2);
+            border: 1px solid var(--success);
+            color: #6ee7b7;
+            padding: 12px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+
+        /* ========== Footer ========== */
+        footer {
+            text-align: center;
+            padding: 30px 20px;
+            color: #9ca3af;
+            border-top: 1px solid var(--border);
+            margin-top: 40px;
+        }
+
+        footer p {
+            margin-bottom: 10px;
+        }
+
+        /* ========== Code Display ========== */
+        code {
+            background: #1f2937;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            color: var(--accent);
+        }
+
+        pre {
+            background: #1f2937;
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 10px 0;
+            border: 1px solid var(--border);
+        }
+
+        pre code {
+            padding: 0;
+            background: none;
+            color: var(--primary);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <h1>🏰 ECHO CHAMBER v3.0 🏰</h1>
+            <p class="subtitle">Advanced Magical Sequence Prediction Engine</p>
+            <p style="margin-top: 10px; font-size: 0.95em;">
+                Arithmetic • Geometric • Polynomial Sequences
+            </p>
+        </header>
+
+        <!-- Main Content -->
+        <main>
+            <!-- Predictor Card -->
+            <div class="card">
+                <h2>🔮 Sequence Predictor</h2>
+                <div class="form-group">
+                    <label for="sequenceInput">Enter a Sequence (comma-separated):</label>
+                    <input type="text" id="sequenceInput" placeholder="e.g., 2,4,6,8,10" />
+                </div>
+                <div class="form-group">
+                    <label for="predictCount">Number of Predictions:</label>
+                    <input type="number" id="predictCount" value="1" min="1" max="10" />
+                </div>
+                <button class="btn-primary" onclick="predict()">✨ Predict</button>
+                <div id="predictResult"></div>
+            </div>
+
+            <!-- Validator Card -->
+            <div class="card">
+                <h2>🧪 Pattern Validator</h2>
+                <div class="form-group">
+                    <label for="validateInput">Enter a Sequence:</label>
+                    <input type="text" id="validateInput" placeholder="e.g., 1,4,9,16,25" />
+                </div>
+                <button class="btn-primary" onclick="validate()">🔍 Analyze</button>
+                <div id="validateResult"></div>
+            </div>
+
+            <!-- Sample Selector Card -->
+            <div class="card">
+                <h2>🧪 Sample Sequences</h2>
+                <p style="margin-bottom: 15px; font-size: 0.95em;">
+                    Click on a sample to test it:
+                </p>
+                <div id="samplesContainer"></div>
+            </div>
+        </main>
+
+        <!-- Tabs Section -->
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab('chart')">📈 Visualization</button>
+            <button class="tab-btn" onclick="switchTab('memories')">📚 Memories</button>
+            <button class="tab-btn" onclick="switchTab('statistics')">📊 Statistics</button>
+            <button class="tab-btn" onclick="switchTab('documentation')">📖 Documentation</button>
+        </div>
+
+        <!-- Tab Content -->
+        <div class="card">
+            <!-- Chart Tab -->
+            <div id="chartTab" class="tab-content">
+                <h2>📈 Sequence Visualization</h2>
+                <p style="margin-bottom: 20px;">
+                    Visual representation of your sequence and predictions.
+                </p>
+                <canvas id="sequenceChart"></canvas>
+                <p id="chartInfo" style="margin-top: 15px; text-align: center; color: #9ca3af;">
+                    Enter a sequence and predict to see visualization
+                </p>
+            </div>
+
+            <!-- Memories Tab -->
+            <div id="memoriesTab" class="tab-content" style="display: none;">
+                <h2>📚 Echo Memories</h2>
+                <p style="margin-bottom: 15px;">
+                    All previous sequence analyses stored in the Echo Chamber:
+                </p>
+                <button class="btn-secondary" onclick="loadMemories()">🔄 Refresh</button>
+                <button class="btn-secondary" onclick="clearMemories()">🗑️ Clear All</button>
+                <div id="memoriesContent"></div>
+            </div>
+
+            <!-- Statistics Tab -->
+            <div id="statisticsTab" class="tab-content" style="display: none;">
+                <h2>📊 Advanced Statistics</h2>
+                <button class="btn-secondary" onclick="loadStatistics()">🔄 Refresh</button>
+                <div id="statisticsContent"></div>
+            </div>
+
+            <!-- Documentation Tab -->
+            <div id="documentationTab" class="tab-content" style="display: none;">
+                <h2>📖 Pattern Guide</h2>
+                <div style="margin-top: 20px;">
+                    <h3 style="color: var(--primary); margin-top: 15px;">🔢 Arithmetic Progressions</h3>
+                    <p>Each number increases (or decreases) by a constant amount called the <strong>common difference</strong>.</p>
+                    <p><strong>Example:</strong> 2, 4, 6, 8, 10... (difference: 2)</p>
+                    <p><strong>Formula:</strong> a<sub>n</sub> = a<sub>1</sub> + (n-1)d</p>
+
+                    <h3 style="color: var(--primary); margin-top: 15px;">⚡ Geometric Progressions</h3>
+                    <p>Each number is multiplied by a constant amount called the <strong>common ratio</strong>.</p>
+                    <p><strong>Example:</strong> 2, 4, 8, 16, 32... (ratio: 2)</p>
+                    <p><strong>Formula:</strong> a<sub>n</sub> = a<sub>1</sub> × r<sup>n-1</sup></p>
+
+                    <h3 style="color: var(--primary); margin-top: 15px;">📈 Polynomial Sequences</h3>
+                    <p>Sequences that follow a polynomial pattern of degree 2 or higher.</p>
+                    <p><strong>Quadratic Example:</strong> 1, 4, 9, 16, 25... (n²)</p>
+                    <p><strong>Cubic Example:</strong> 1, 8, 27, 64, 125... (n³)</p>
+                    <p><strong>Method:</strong> Finite differences</p>
+
+                    <h3 style="color: var(--primary); margin-top: 15px;">🔮 How It Works</h3>
+                    <p>The Echo Chamber automatically detects which type of pattern your sequence follows by testing each pattern in order:</p>
+                    <ol style="margin: 10px 0 10px 30px;">
+                        <li>First, it checks for arithmetic progressions</li>
+                        <li>Then geometric progressions</li>
+                        <li>Finally, polynomial sequences (up to degree 5)</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer>
+            <p>🏰 Echo Chamber v3.0 - Advanced Sequence Prediction Engine</p>
+            <p>Supports: Arithmetic • Geometric • Polynomial Sequences</p>
+            <p style="color: #6b7280; font-size: 0.9em;">
+                Created with ✨ by GitHub Copilot Adventures
+            </p>
+        </footer>
+    </div>
+
+    <!-- Chart.js Library -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+
+    <script>
+        // ========== Global State ==========
+        let currentChart = null;
+        let lastResult = null;
+
+        // ========== API Communication ==========
+        async function apiCall(endpoint, method = 'GET', data = null) {
+            try {
+                const options = {
+                    method: method,
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                };
+
+                if (data) {
+                    options.body = JSON.stringify(data);
+                }
+
+                const response = await fetch(`/api${endpoint}`, options);
+                const result = await response.json();
+
+                if (!response.ok && result.error) {
+                    throw new Error(result.error);
+                }
+
+                return result;
+            } catch (error) {
+                console.error('API Error:', error);
+                throw error;
+            }
+        }
+
+        // ========== Prediction Function ==========
+        async function predict() {
+            const input = document.getElementById('sequenceInput').value.trim();
+            const predictCount = parseInt(document.getElementById('predictCount').value) || 1;
+            const resultDiv = document.getElementById('predictResult');
+
+            if (!input) {
+                resultDiv.innerHTML = '<div class="error-message">❌ Please enter a sequence</div>';
+                return;
+            }
+
+            try {
+                const sequence = input.split(',').map(n => parseFloat(n.trim()));
+
+                if (sequence.some(n => isNaN(n))) {
+                    resultDiv.innerHTML = '<div class="error-message">❌ All inputs must be valid numbers</div>';
+                    return;
+                }
+
+                resultDiv.innerHTML = '<div class="spinner"></div>';
+
+                const result = await apiCall('/predict', 'POST', {
+                    sequence: sequence,
+                    predictCount: predictCount
+                });
+
+                if (result.success) {
+                    lastResult = result;
+                    let html = '<div class="result-box result-success">';
+                    html += '<h3>✨ Prediction Generated</h3>';
+                    html += `<div class="result-item"><span class="result-label">Pattern Type:</span><span class="result-value">${result.pattern.toUpperCase()}</span></div>`;
+                    html += `<div class="result-item"><span class="result-label">Input Length:</span><span class="result-value">${sequence.length}</span></div>`;
+                    html += `<div class="result-item"><span class="result-label">Predictions:</span><span class="result-value">${result.predictions.map(p => Number.isInteger(p) ? p : p.toFixed(4)).join(', ')}</span></div>`;
+
+                    if (result.patternDetails.difference !== null) {
+                        html += `<div class="result-item"><span class="result-label">Common Difference:</span><span class="result-value">${result.patternDetails.difference}</span></div>`;
+                    }
+
+                    if (result.patternDetails.ratio !== null) {
+                        html += `<div class="result-item"><span class="result-label">Common Ratio:</span><span class="result-value">${result.patternDetails.ratio.toFixed(4)}</span></div>`;
+                    }
+
+                    if (result.patternDetails.degree !== null) {
+                        html += `<div class="result-item"><span class="result-label">Polynomial Degree:</span><span class="result-value">${result.patternDetails.degree}</span></div>`;
+                    }
+
+                    html += '</div>';
+                    resultDiv.innerHTML = html;
+
+                    // Update chart
+                    updateChart(sequence, result.predictions);
+                } else {
+                    resultDiv.innerHTML = `<div class="error-message">❌ ${result.error}</div>`;
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `<div class="error-message">❌ Error: ${error.message}</div>`;
+            }
+        }
+
+        // ========== Validation Function ==========
+        async function validate() {
+            const input = document.getElementById('validateInput').value.trim();
+            const resultDiv = document.getElementById('validateResult');
+
+            if (!input) {
+                resultDiv.innerHTML = '<div class="error-message">❌ Please enter a sequence</div>';
+                return;
+            }
+
+            try {
+                const sequence = input.split(',').map(n => parseFloat(n.trim()));
+
+                if (sequence.some(n => isNaN(n))) {
+                    resultDiv.innerHTML = '<div class="error-message">❌ All inputs must be valid numbers</div>';
+                    return;
+                }
+
+                const result = await apiCall('/validate', 'POST', { sequence: sequence });
+
+                if (result.analysis.type !== 'unknown') {
+                    let html = '<div class="result-box result-success">';
+                    html += '<h3>✨ Pattern Detected</h3>';
+                    html += `<div class="result-item"><span class="result-label">Type:</span><span class="result-value">${result.analysis.type.toUpperCase()}</span></div>`;
+
+                    if (result.analysis.difference !== null) {
+                        html += `<div class="result-item"><span class="result-label">Difference:</span><span class="result-value">${result.analysis.difference}</span></div>`;
+                    }
+
+                    if (result.analysis.ratio !== null) {
+                        html += `<div class="result-item"><span class="result-label">Ratio:</span><span class="result-value">${result.analysis.ratio.toFixed(4)}</span></div>`;
+                    }
+
+                    if (result.analysis.degree !== null) {
+                        html += `<div class="result-item"><span class="result-label">Degree:</span><span class="result-value">${result.analysis.degree}</span></div>`;
+                    }
+
+                    html += '</div>';
+                    resultDiv.innerHTML = html;
+                } else {
+                    resultDiv.innerHTML = '<div class="error-message">❌ No recognized pattern detected</div>';
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `<div class="error-message">❌ Error: ${error.message}</div>`;
+            }
+        }
+
+        // ========== Chart Visualization ==========
+        function updateChart(sequence, predictions) {
+            const ctx = document.getElementById('sequenceChart');
+
+            // Destroy previous chart if exists
+            if (currentChart) {
+                currentChart.destroy();
+            }
+
+            const labels = Array.from({ length: sequence.length + predictions.length }, (_, i) => `n=${i + 1}`);
+            const allValues = [...sequence, ...predictions];
+
+            currentChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: 'Input Sequence',
+                            data: sequence,
+                            borderColor: 'rgba(99, 102, 241, 1)',
+                            backgroundColor: 'rgba(99, 102, 241, 0.1)',
+                            borderWidth: 3,
+                            pointRadius: 6,
+                            pointBackgroundColor: 'rgba(99, 102, 241, 1)',
+                            pointBorderColor: '#fff',
+                            pointBorderWidth: 2,
+                            tension: 0.3
+                        },
+                        {
+                            label: 'Predictions',
+                            data: Array(sequence.length - 1).fill(null).concat([sequence[sequence.length - 1]], predictions),
+                            borderColor: 'rgba(236, 72, 153, 1)',
+                            backgroundColor: 'rgba(236, 72, 153, 0.1)',
+                            borderWidth: 3,
+                            borderDash: [5, 5],
+                            pointRadius: 6,
+                            pointBackgroundColor: 'rgba(236, 72, 153, 1)',
+                            pointBorderColor: '#fff',
+                            pointBorderWidth: 2,
+                            tension: 0.3
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: '#e5e7eb',
+                                font: { size: 12 }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            ticks: { color: '#e5e7eb' },
+                            grid: { color: 'rgba(229, 231, 235, 0.1)' }
+                        },
+                        x: {
+                            ticks: { color: '#e5e7eb' },
+                            grid: { color: 'rgba(229, 231, 235, 0.1)' }
+                        }
+                    }
+                }
+            });
+
+            document.getElementById('chartInfo').textContent = 'Sequence visualization updated';
+        }
+
+        // ========== Load Samples ==========
+        async function loadSamples() {
+            try {
+                const result = await apiCall('/samples');
+                const container = document.getElementById('samplesContainer');
+                let html = '';
+
+                result.samples.forEach(sample => {
+                    html += `
+                        <div class="sample-item" onclick="useSample('${sample.sequence.join(',')}')">
+                            <div class="sample-name">🎯 ${sample.name}</div>
+                            <div class="sample-description">${sample.description}</div>
+                            <div class="sample-sequence">[${sample.sequence.join(', ')}]</div>
+                        </div>
+                    `;
+                });
+
+                container.innerHTML = html;
+            } catch (error) {
+                console.error('Error loading samples:', error);
+            }
+        }
+
+        // ========== Use Sample ==========
+        function useSample(sequence) {
+            document.getElementById('sequenceInput').value = sequence;
+            document.getElementById('sequenceInput').focus();
+            setTimeout(() => predict(), 100);
+        }
+
+        // ========== Load Memories ==========
+        async function loadMemories() {
+            try {
+                const result = await apiCall('/memories');
+                const container = document.getElementById('memoriesContent');
+                let html = '';
+
+                if (result.memories.length === 0) {
+                    html = '<p style="color: #9ca3af;">No memories stored yet.</p>';
+                } else {
+                    html = `<p style="margin-bottom: 15px;">Total memories: <strong>${result.total}</strong></p>`;
+                    html += '<div class="memories-list">';
+
+                    result.memories.forEach((memory, index) => {
+                        html += `
+                            <div class="memory-item">
+                                <span class="badge">${memory.pattern.toUpperCase()}</span>
+                                <div class="result-item"><span class="result-label">Sequence:</span><span class="result-value">[${memory.sequence.slice(0, 5).join(', ')}${memory.sequence.length > 5 ? '...' : ''}]</span></div>
+                                <div class="result-item"><span class="result-label">Prediction:</span><span class="result-value">${memory.predictions[0].toFixed(4)}</span></div>
+                                <div class="result-item"><span class="result-label">Time:</span><span class="result-value">${new Date(memory.timestamp).toLocaleString()}</span></div>
+                            </div>
+                        `;
+                    });
+
+                    html += '</div>';
+                }
+
+                container.innerHTML = html;
+            } catch (error) {
+                document.getElementById('memoriesContent').innerHTML = `<div class="error-message">Error loading memories: ${error.message}</div>`;
+            }
+        }
+
+        // ========== Load Statistics ==========
+        async function loadStatistics() {
+            try {
+                const result = await apiCall('/statistics');
+                const stats = result.statistics;
+                const container = document.getElementById('statisticsContent');
+
+                let html = '<div class="stats-grid">';
+                html += `<div class="stat-box"><div class="stat-value">${stats.totalEchoes}</div><div class="stat-label">Total Echoes</div></div>`;
+                html += `<div class="stat-box"><div class="stat-value">${stats.averageSequenceLength.toFixed(1)}</div><div class="stat-label">Avg Length</div></div>`;
+                html += `<div class="stat-box"><div class="stat-value">${stats.performanceMetrics.longestSequenceLength}</div><div class="stat-label">Longest</div></div>`;
+                html += `<div class="stat-box"><div class="stat-value">${stats.performanceMetrics.averageAnalysisTime.toFixed(4)}ms</div><div class="stat-label">Avg Time</div></div>`;
+                html += '</div>';
+
+                html += '<h3 style="color: var(--primary); margin-top: 20px;">Pattern Distribution</h3>';
+                Object.entries(stats.patternDistribution).forEach(([pattern, count]) => {
+                    html += `<div class="result-item"><span class="result-label">${pattern}</span><span class="result-value">${count}</span></div>`;
+                });
+
+                container.innerHTML = html;
+            } catch (error) {
+                document.getElementById('statisticsContent').innerHTML = `<div class="error-message">Error loading statistics: ${error.message}</div>`;
+            }
+        }
+
+        // ========== Clear Memories ==========
+        async function clearMemories() {
+            if (confirm('Are you sure you want to clear all memories?')) {
+                try {
+                    await apiCall('/clear', 'POST');
+                    alert('Memories cleared!');
+                    loadMemories();
+                } catch (error) {
+                    alert('Error clearing memories: ' + error.message);
+                }
+            }
+        }
+
+        // ========== Tab Switching ==========
+        function switchTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.style.display = 'none';
+            });
+
+            // Remove active class from all buttons
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            // Show selected tab
+            const selectedTab = document.getElementById(tabName + 'Tab');
+            if (selectedTab) {
+                selectedTab.style.display = 'block';
+            }
+
+            // Add active class to button
+            event.target.classList.add('active');
+
+            // Load data for tabs
+            if (tabName === 'memories') {
+                loadMemories();
+            } else if (tabName === 'statistics') {
+                loadStatistics();
+            }
+        }
+
+        // ========== Initialize ==========
+        document.addEventListener('DOMContentLoaded', () => {
+            loadSamples();
+            console.log('🏰 Echo Chamber v3.0 loaded');
+        });
+    </script>
+</body>
+</html>

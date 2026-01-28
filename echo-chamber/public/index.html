@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Echo Chamber - Magical Number Sequence Predictor</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <h1>✨ Echo Chamber of Sequentia ✨</h1>
+                <p class="subtitle">A Mystical Number Sequence Prediction Puzzle</p>
+            </div>
+        </header>
+
+        <!-- Story Section -->
+        <section class="story-section">
+            <div class="story-content">
+                <h2>📜 The Legend</h2>
+                <p>In the mystical realm of Sequentia, there exists an ancient chamber where magical echoes reveal the hidden patterns of numbers. Every sequence of numbers follows an invisible force - an arithmetic progression that governs their behavior.</p>
+                <p>Your quest: Enter sequences of numbers into the Echo Chamber, and the ancient magic will reveal the next number in the sequence!</p>
+            </div>
+        </section>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="tabs">
+                <button class="tab-button active" data-tab="predictor">🔮 Predictor</button>
+                <button class="tab-button" data-tab="samples">🧪 Samples</button>
+                <button class="tab-button" data-tab="memories">📚 Memories</button>
+                <button class="tab-button" data-tab="statistics">📊 Statistics</button>
+            </div>
+
+            <!-- Predictor Tab -->
+            <section id="predictor" class="tab-content active">
+                <div class="tab-inner">
+                    <h2>🔮 Sequence Predictor</h2>
+                    
+                    <div class="form-group">
+                        <label for="sequenceInput">Enter your sequence (comma-separated):</label>
+                        <input 
+                            type="text" 
+                            id="sequenceInput" 
+                            placeholder="e.g., 3, 6, 9, 12"
+                            class="input-field"
+                        >
+                        <button class="btn btn-primary" id="predictBtn">🔮 Predict Next Number</button>
+                    </div>
+
+                    <div id="predictorResult" class="result-container"></div>
+
+                    <div class="quick-actions">
+                        <h3>Quick Actions</h3>
+                        <button class="btn btn-secondary" id="clearMemoriesBtn">🗑️ Clear All Memories</button>
+                        <button class="btn btn-secondary" id="loadSampleBtn">📋 Load Sample</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Samples Tab -->
+            <section id="samples" class="tab-content">
+                <div class="tab-inner">
+                    <h2>🧪 Sample Sequences</h2>
+                    <p>Try these predefined sequences to test the Echo Chamber:</p>
+                    <div id="samplesContainer" class="samples-grid"></div>
+                </div>
+            </section>
+
+            <!-- Memories Tab -->
+            <section id="memories" class="tab-content">
+                <div class="tab-inner">
+                    <h2>📚 Stored Memories</h2>
+                    <p>All predictions made in the Echo Chamber are stored as memories.</p>
+                    <button class="btn btn-secondary" id="refreshMemoriesBtn">🔄 Refresh Memories</button>
+                    <div id="memoriesContainer" class="memories-container"></div>
+                </div>
+            </section>
+
+            <!-- Statistics Tab -->
+            <section id="statistics" class="tab-content">
+                <div class="tab-inner">
+                    <h2>📊 Echo Chamber Statistics</h2>
+                    <button class="btn btn-secondary" id="refreshStatsBtn">🔄 Refresh Statistics</button>
+                    <div id="statisticsContainer" class="statistics-container"></div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>Echo Chamber v2.0 | Powered by the mystical echoes of Sequentia ✨</p>
+        </footer>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

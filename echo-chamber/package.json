@@ -1,0 +1,32 @@
+{
+  "name": "echo-chamber",
+  "version": "3.0.0",
+  "description": "Echo Chamber v3.0 - Advanced Sequence Prediction Engine supporting Arithmetic, Geometric, and Polynomial Progressions",
+  "main": "echo-chamber-v3.js",
+  "scripts": {
+    "start": "node server-v3.js",
+    "console": "node echo-chamber-v3.js",
+    "test": "node test-v3.js",
+    "web": "node server-v3.js",
+    "dev": "node server-v3.js",
+    "docs": "node docs-generator.js",
+    "legacy-console": "node index.js",
+    "legacy-server": "node server.js",
+    "legacy-test": "node test.js"
+  },
+  "keywords": [
+    "arithmetic-progression",
+    "geometric-progression",
+    "polynomial-sequence",
+    "sequence-prediction",
+    "educational",
+    "puzzle",
+    "mathematics",
+    "pattern-recognition"
+  ],
+  "author": "GitHub Copilot Adventures",
+  "license": "MIT",
+  "engines": {
+    "node": ">=12.0.0"
+  }
+}
